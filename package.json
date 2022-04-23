@@ -1,0 +1,42 @@
+{
+  "name": "tauri_github_analyzer",
+  "version": "0.0.1",
+  "description": "Github Traffic Analyzer with Tauri",
+  "author": "sake <sakelog.website@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "cross-env BROWSER=none react-scripts start",
+    "build": "react-scripts build",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^1.0.0-rc.3",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-scripts": "^5.0.1",
+    "web-vitals": "^2.1.4"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.0.0-rc.8",
+    "@tsconfig/create-react-app": "^1.0.2",
+    "@types/jest": "^27.4.1",
+    "@types/node": "^17.0.25",
+    "@types/react": "^18.0.6",
+    "@types/react-dom": "^18.0.2",
+    "cross-env": "^7.0.3",
+    "sass": "^1.50.1",
+    "typescript": "^4.6.3"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
