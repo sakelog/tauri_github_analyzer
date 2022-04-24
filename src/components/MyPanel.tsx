@@ -1,5 +1,6 @@
 // lib
 import { convertToChartData } from 'lib/util/convertToChartData';
+import { sortInfoList } from 'lib/util/sortInfoList';
 
 // component
 import {
@@ -25,6 +26,10 @@ type PropTypes = {
 // Main
 const MyPanel = (props: PropTypes) => {
   const { trafficItems, mode } = props;
+  const sortedTrafficItems = sortInfoList(
+    trafficItems,
+    mode
+  );
 
   return (
     <Grid
@@ -36,7 +41,7 @@ const MyPanel = (props: PropTypes) => {
       gap={6}
       p={4}
     >
-      {trafficItems.map((item) => {
+      {sortedTrafficItems.map((item) => {
         const { name, url } = item;
 
         const targetInfo =

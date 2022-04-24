@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 
 // lib
 import { invoke } from '@tauri-apps/api/tauri';
-import { sortInfoList } from 'lib/util/sortInfoList';
 
 // component
 import {
@@ -46,19 +45,13 @@ const App = () => {
       <TabPanels>
         <TabPanel>
           <MyPanel
-            trafficItems={sortInfoList(
-              trafficResults,
-              'views'
-            )}
+            trafficItems={trafficResults}
             mode="views"
           />
         </TabPanel>
         <TabPanel>
           <MyPanel
-            trafficItems={sortInfoList(
-              trafficResults,
-              'clones'
-            )}
+            trafficItems={trafficResults}
             mode="clones"
           />
         </TabPanel>
