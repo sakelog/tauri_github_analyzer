@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { env } from 'process';
 import { ChakraProvider } from '@chakra-ui/react';
 
 // component
@@ -18,7 +17,7 @@ root?.render(
   </React.StrictMode>
 );
 
-if (env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development') {
   // eslint-disable-next-line no-console
   reportWebVitals(console.log);
 }
