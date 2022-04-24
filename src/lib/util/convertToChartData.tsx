@@ -23,9 +23,10 @@ export const convertToChartData = (
   targetArray.sort(sortByTimeStamp);
   const slicedArray = targetArray.slice(-5);
 
-  let labels: string[] = [];
-  let counts: number[] = [];
+  const labels: string[] = [];
+  const counts: number[] = [];
 
+  // eslint-disable-next-line array-callback-return
   slicedArray.map((item) => {
     labels.push(formatDate(item.timestamp));
     counts.push(item.count);
@@ -36,3 +37,5 @@ export const convertToChartData = (
     counts,
   };
 };
+
+export default { convertToChartData };

@@ -10,3 +10,5 @@ export const formatDate = (targetString: string) => {
     timeZone: TIME_ZONE,
   });
 };
+
+export default { formatDate };

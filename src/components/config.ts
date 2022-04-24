@@ -4,3 +4,5 @@ export const config = {
     clones: '#38b48b',
   },
 };
+
+export default config;

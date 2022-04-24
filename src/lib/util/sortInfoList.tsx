@@ -10,3 +10,5 @@ export const sortInfoList = (
 
   return targetArray;
 };
+
+export default { sortInfoList };
