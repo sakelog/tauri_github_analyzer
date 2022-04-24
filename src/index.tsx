@@ -7,14 +7,16 @@ import reportWebVitals from './reportWebVitals';
 import App from './App';
 
 // style
-import 'style/global.scss';
+import { ChakraProvider } from '@chakra-ui/react';
 
 const container = document.getElementById('root');
 const root = container && ReactDOM.createRoot(container);
 
 root?.render(
   <React.StrictMode>
-    <App />
+    <ChakraProvider>
+      <App />
+    </ChakraProvider>
   </React.StrictMode>
 );
 

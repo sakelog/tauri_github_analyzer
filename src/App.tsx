@@ -1,57 +1,62 @@
 import { useState, useEffect } from 'react';
 
 // lib
-import { traffic } from 'lib/github/getContent';
+import { invoke } from '@tauri-apps/api/tauri';
+import { sortInfoList } from 'lib/util/sortInfoList';
 
 // component
 import {
-  Grid,
-  Typography,
-  List,
-  ListItem,
-  ListItemText,
-} from '@mui/material';
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+} from '@chakra-ui/react';
+import MyPanel from 'components/MyPanel';
 
+// Main
 const App = () => {
   const [trafficResults, setTrafficResults] = useState<
-    Array<GitHub.TrafficResult>
+    Array<Github.RepoInfo>
   >([]);
 
   useEffect(() => {
     const onGetTraffics = async () => {
-      const results = await traffic.getTraffic();
+      const results = (await invoke(
+        'my_custom_command'
+      )) as Array<Github.RepoInfo>;
       setTrafficResults(results);
     };
     onGetTraffics();
   }, []);
 
   return (
-    <Grid container spacing={2} alignItems="stretch">
-      {trafficResults.map((item) => (
-        <Grid key={item.name} item xs={4} overflow="hidden">
-          <Typography
-            variant="h5"
-            component="h2"
-            display="block"
-          >
-            {item.name}
-          </Typography>
-          <span>{item.count}</span>
-          <List>
-            {item.views.map((view) => (
-              <ListItem
-                key={item.name + '_' + view.timestamp}
-              >
-                <ListItemText>
-                  {view.timestamp}
-                </ListItemText>
-                <ListItemText>{view.count}</ListItemText>
-              </ListItem>
-            ))}
-          </List>
-        </Grid>
-      ))}
-    </Grid>
+    <Tabs>
+      <TabList>
+        <Tab>Views</Tab>
+        <Tab>Clones</Tab>
+      </TabList>
+      <TabPanels>
+        <TabPanel>
+          <MyPanel
+            trafficItems={sortInfoList(
+              trafficResults,
+              'views'
+            )}
+            mode="views"
+          />
+        </TabPanel>
+        <TabPanel>
+          <MyPanel
+            trafficItems={sortInfoList(
+              trafficResults,
+              'clones'
+            )}
+            mode="clones"
+          />
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
   );
 };
 

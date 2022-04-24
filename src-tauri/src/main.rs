@@ -5,18 +5,29 @@
 
 use dotenv::dotenv;
 use octorust::{auth::Credentials, Client};
-// use serde_json::json;
 
 #[allow(dead_code)]
 #[derive(serde::Serialize)]
-  struct ViewItem {
+  struct TrafficInfo {
       name: String,
-      count: i64,
-      uniques: i64,
-      views: Vec<octorust::types::Traffic>,
+      url: String,
+      views_info : ViewsInfo,
+      clones_info: ClonesInfo,
+  }
+  #[derive(serde::Serialize)]
+  struct ViewsInfo {
+    count: i64,
+    uniques: i64,
+    items: Vec<octorust::types::Traffic>,
+  }
+  #[derive(serde::Serialize)]
+  struct ClonesInfo {
+    count: i64,
+    uniques: i64,
+    items: Vec<octorust::types::Traffic>,
   }
 
-async fn get_reqwest() -> Result<Vec<ViewItem>,octorust::types::Error> {
+async fn get_reqwest() -> Result<Vec<TrafficInfo>,octorust::types::Error> {
   dotenv().ok();
   let personal_token = 
   dotenv::var("REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN")
@@ -45,7 +56,7 @@ async fn get_reqwest() -> Result<Vec<ViewItem>,octorust::types::Error> {
       octorust::types::Order::Desc)
     .await.expect("repos get error");
     
-  let mut views_list :Vec<ViewItem> = vec![];
+  let mut traffic_list :Vec<TrafficInfo> = vec![];
   
   for repo in &resp {
     let views = 
@@ -58,24 +69,42 @@ async fn get_reqwest() -> Result<Vec<ViewItem>,octorust::types::Error> {
       )
       .await.expect("get view error");
 
-    let views_item = ViewItem {
+    let clones =
+      github
+      .repos()
+      .get_clones(
+        &login,
+        &repo.name,
+        octorust::types::Per::Day
+      ).await.expect("get clones error");
+
+    let traffic_result = TrafficInfo {
       name:repo.name.clone(),
-      count: views.count,
-      uniques: views.uniques,
-      views: views.views,
+      url: repo.html_url.clone(),
+      views_info: { ViewsInfo {
+        count: views.count,
+        uniques: views.uniques,
+        items: views.views,
+      } },
+      clones_info: { ClonesInfo {
+         count: clones.count, 
+         uniques: clones.uniques, 
+         items: clones.clones, 
+        }
+
+      }
     };
 
-    views_list.push(views_item);
+    traffic_list.push(traffic_result);
   }
-  // println!("Result: {:?}", views_list);
-  Ok(views_list)
+  
+  Ok(traffic_list)
 }
 
 #[tauri::command]
-async fn my_custom_command() -> Vec<ViewItem>  {
+async fn my_custom_command() -> Vec<TrafficInfo>  {
   let result = 
     get_reqwest().await.expect("func error");
-  //println!("Result: {:?}", result);
 
   result.into()
 }

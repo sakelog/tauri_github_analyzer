@@ -1,12 +1,19 @@
-declare namespace GitHub {
-  export type Views = {
+declare namespace Github {
+  export type RepoInfo = {
+    name: string;
+    url: string;
+    views_info: TrafficInfo;
+    clones_info: TrafficInfo;
+  };
+
+  export type Traffic = {
     timestamp: string;
     uniques: number;
     count: number;
   };
-  export type TrafficResult = {
-    name: string;
+  export interface TrafficInfo {
     count: number;
-    views: Array<Views>;
-  };
+    uniques: number;
+    items: Array<Traffic>;
+  }
 }
