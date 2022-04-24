@@ -12,6 +12,7 @@ import {
   Center,
   Circle,
   Link,
+  Tooltip,
 } from '@chakra-ui/react';
 import Chart from 'components/Chart';
 
@@ -73,9 +74,11 @@ const MyPanel = (props: PropTypes) => {
                 color="blue.400"
                 isExternal
               >
-                <Heading fontSize="2xl" isTruncated>
-                  {name}
-                </Heading>
+                <Tooltip label={name}>
+                  <Heading fontSize="2xl" isTruncated>
+                    {name}
+                  </Heading>
+                </Tooltip>
               </Link>
               <Circle size="12" bg={themeColor}>
                 <Center>
