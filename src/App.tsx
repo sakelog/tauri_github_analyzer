@@ -11,6 +11,8 @@ import {
   TabPanels,
   Tab,
   TabPanel,
+  Center,
+  Spinner,
 } from '@chakra-ui/react';
 import MyPanel from 'components/MyPanel';
 
@@ -23,7 +25,7 @@ const App = () => {
   useEffect(() => {
     const onGetTraffics = async () => {
       const results = (await invoke(
-        'my_custom_command'
+        'fetch_repo_info'
       )) as Array<Github.RepoInfo>;
       setTrafficResults(results);
     };
@@ -36,6 +38,11 @@ const App = () => {
         <Tab>Views</Tab>
         <Tab>Clones</Tab>
       </TabList>
+      {trafficResults.length === 0 && (
+        <Center h="sm">
+          <Spinner size="xl" color="gray.400" />
+        </Center>
+      )}
       <TabPanels>
         <TabPanel>
           <MyPanel

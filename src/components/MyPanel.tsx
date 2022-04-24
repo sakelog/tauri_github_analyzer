@@ -25,6 +25,7 @@ type PropTypes = {
 // Main
 const MyPanel = (props: PropTypes) => {
   const { trafficItems, mode } = props;
+  console.log(trafficItems);
   return (
     <>
       <Grid

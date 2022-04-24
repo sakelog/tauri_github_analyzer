@@ -6,6 +6,7 @@
 use dotenv::dotenv;
 use octorust::{auth::Credentials, Client};
 
+#[derive(Debug)]
 #[allow(dead_code)]
 #[derive(serde::Serialize)]
   struct TrafficInfo {
@@ -14,12 +15,14 @@ use octorust::{auth::Credentials, Client};
       views_info : ViewsInfo,
       clones_info: ClonesInfo,
   }
+  #[derive(Debug)]
   #[derive(serde::Serialize)]
   struct ViewsInfo {
     count: i64,
     uniques: i64,
     items: Vec<octorust::types::Traffic>,
   }
+  #[derive(Debug)]
   #[derive(serde::Serialize)]
   struct ClonesInfo {
     count: i64,
@@ -30,7 +33,7 @@ use octorust::{auth::Credentials, Client};
 async fn get_reqwest() -> Result<Vec<TrafficInfo>,octorust::types::Error> {
   dotenv().ok();
   let personal_token = 
-  dotenv::var("REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN")
+  dotenv::var("GITHUB_PERSONAL_ACCESS_TOKEN")
   .expect("ACCESS_TOKEN must be set");
 
   let github = Client::new(
@@ -102,7 +105,7 @@ async fn get_reqwest() -> Result<Vec<TrafficInfo>,octorust::types::Error> {
 }
 
 #[tauri::command]
-async fn my_custom_command() -> Vec<TrafficInfo>  {
+async fn fetch_repo_info() -> Vec<TrafficInfo>  {
   let result = 
     get_reqwest().await.expect("func error");
 
@@ -111,7 +114,7 @@ async fn my_custom_command() -> Vec<TrafficInfo>  {
 
 fn main() {
   tauri::Builder::default()
-  .invoke_handler(tauri::generate_handler![my_custom_command])
+  .invoke_handler(tauri::generate_handler![fetch_repo_info])
   .run(tauri::generate_context!())
   .expect("error while running tauri application");
 }

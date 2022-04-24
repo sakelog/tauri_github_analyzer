@@ -29,9 +29,10 @@ const Chart = ({
 }) => {
   const options = {
     responsive: true,
+    scales: {},
     plugins: {
       legend: {
-        position: 'bottom' as const,
+        display: false,
       },
     },
   };
