@@ -1,11 +1,11 @@
 [package]
-name = "app"
+name = "tauri_github_analyzer"
 version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
-license = ""
+description = "Github Traffic Analyzer with Tauri"
+authors = ["sake <sakelog.website@gmail.com>"]
+license = "MIT"
 repository = ""
-default-run = "app"
+default-run = "tauri_github_analyzer"
 edition = "2021"
 rust-version = "1.57"
 

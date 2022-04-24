@@ -54,20 +54,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "08f9b8508dccb7687a1d6c4ce66b2b0ecef467c94667de27d8d7fe1f8d2a9cdc"
 
 [[package]]
-name = "app"
-version = "0.1.0"
-dependencies = [
- "dotenv",
- "octorust",
- "reqwest",
- "serde",
- "serde_json",
- "tauri",
- "tauri-build",
- "tokio",
-]
-
-[[package]]
 name = "async-recursion"
 version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3299,6 +3285,20 @@ dependencies = [
  "thiserror",
  "url",
  "walkdir",
+]
+
+[[package]]
+name = "tauri_github_analyzer"
+version = "0.1.0"
+dependencies = [
+ "dotenv",
+ "octorust",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "tauri",
+ "tauri-build",
+ "tokio",
 ]
 
 [[package]]
