@@ -11,5 +11,5 @@
       "style/*": ["style/*"]
     }
   },
-  "include": ["src"]
+  "include": ["./src/**/*"]
 }
