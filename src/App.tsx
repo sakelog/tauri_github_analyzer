@@ -22,10 +22,14 @@ const App = () => {
   >([]);
 
   useEffect(() => {
+    const personalToken =
+      process.env.REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN;
+
     const onGetTraffics = async () => {
-      const results = (await invoke(
-        'fetch_repo_info'
-      )) as Array<Github.RepoInfo>;
+      const results = await invoke<Github.RepoInfo[]>(
+        'fetch_repo_info',
+        { personalToken }
+      );
       setTrafficResults(results);
     };
     onGetTraffics();
