@@ -3,9 +3,6 @@
   windows_subsystem = "windows"
 )]
 
-use dotenv::dotenv;
-use octorust::{auth::Credentials, Client};
-
 #[derive(Debug)]
 #[allow(dead_code)]
 #[derive(serde::Serialize)]
@@ -30,25 +27,25 @@ use octorust::{auth::Credentials, Client};
     items: Vec<octorust::types::Traffic>,
   }
 
-async fn get_reqwest() -> Result<Vec<TrafficInfo>,octorust::types::Error> {
-  dotenv().ok();
-  let personal_token = 
-  dotenv::var("GITHUB_PERSONAL_ACCESS_TOKEN")
-  .expect("ACCESS_TOKEN must be set");
 
-  let github = Client::new(
-    String::from("user-agent-name"),
-    Credentials::Token(String::from(personal_token)),
-).expect("client error");
+use octorust::{auth::Credentials, Client, types::MinimalRepository};  
+use std::env;
 
-  let user_resp = 
+async fn get_login_user(github:Client) -> 
+  String {
+  let resp = 
     github
     .users()
     .get_authenticated_public_user()
     .await.expect("user get error");
 
-  let login = user_resp.login;
+  let login = resp.login;
 
+  login.into()
+}
+
+async fn get_repos(github:Client,login:String) 
+  -> Vec<MinimalRepository> {
   let resp =
     github
     .repos()
@@ -58,10 +55,27 @@ async fn get_reqwest() -> Result<Vec<TrafficInfo>,octorust::types::Error> {
       octorust::types::ReposListOrgSort::Created, 
       octorust::types::Order::Desc)
     .await.expect("repos get error");
+
+  resp.into()
+}
+
+async fn get_reqwest(personal_token:String) -> 
+  Result<Vec<TrafficInfo>,octorust::types::Error> {
+
+  let github = Client::new(
+    String::from("user-agent-name"),
+    Credentials::Token(String::from(personal_token)),
+).expect("client error");
+
+  let login = 
+    get_login_user(github.clone()).await;
     
+  let repos = 
+    get_repos(github.clone(), login.clone()).await;
+
   let mut traffic_list :Vec<TrafficInfo> = vec![];
   
-  for repo in &resp {
+  for repo in &repos {
     let views = 
       github
       .repos()
@@ -105,9 +119,10 @@ async fn get_reqwest() -> Result<Vec<TrafficInfo>,octorust::types::Error> {
 }
 
 #[tauri::command]
-async fn fetch_repo_info() -> Vec<TrafficInfo>  {
+async fn fetch_repo_info(personal_token:String) 
+  -> Vec<TrafficInfo>  {
   let result = 
-    get_reqwest().await.expect("func error");
+    get_reqwest(personal_token).await.expect("func error");
 
   result.into()
 }
