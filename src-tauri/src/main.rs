@@ -64,8 +64,9 @@ async fn get_reqwest(personal_token:String) ->
 
   let github = Client::new(
     String::from("user-agent-name"),
-    Credentials::Token(String::from(personal_token)),
-).expect("client error");
+    Credentials::Token(personal_token.clone()),
+  )
+  .expect("client error");
 
   let login = 
     get_login_user(github.clone()).await;
@@ -118,11 +119,87 @@ async fn get_reqwest(personal_token:String) ->
   Ok(traffic_list)
 }
 
+use tauri::api::path::{app_dir};
+use std::fs;
+use std::fs::{OpenOptions};
+use std::io::{Write};
+
+use std::path::PathBuf;
+
+fn create_env_file(
+  dir_path:PathBuf,
+  file_path:PathBuf,
+  personal_token:String,
+) {
+  let personal_token_json = serde_json::json!(
+    {
+      "personal_token" : personal_token.clone(),
+    }
+  );
+
+ if dir_path.exists() {
+ } else {
+  fs::create_dir(dir_path)
+    .unwrap_or_else(|why| {
+      println!("!dir: {:?}", why.kind())});
+  }
+
+  let mut output_file = 
+    OpenOptions::new()
+    .create(true)
+    .write(true)
+    .open(file_path)
+    .expect("file create error");
+
+  let out_str =
+    serde_json::to_string(&personal_token_json)
+    .expect("json toStr error");
+  
+  let out_buf = out_str.as_bytes();
+  output_file.write_all(out_buf).expect("write file error");
+  output_file.flush().expect("flush file error");
+}
+
+fn load_env(
+  file_path:PathBuf
+) -> String {
+  let input_str = fs::read_to_string(file_path)
+    .expect("file read error");
+
+  let input_json :serde_json::Value = 
+    serde_json::from_str(&input_str)
+    .expect("str toJson error");
+
+  input_json["personal_token"].as_str().unwrap().into()
+}
+
 #[tauri::command]
-async fn fetch_repo_info(personal_token:String) 
+async fn fetch_repo_info(new_personal_token:Option<String>) 
   -> Vec<TrafficInfo>  {
+
+  let mut path_json_dir = 
+    app_dir(&Default::default()).unwrap();
+  path_json_dir.push("Tauri Github Analyzer");
+
+  let mut path_json_file = path_json_dir.clone();
+  path_json_file.push("token.json");
+
+  if path_json_file.exists() {
+  } else {
+  match new_personal_token {
+    Some(result) => create_env_file(
+      path_json_dir,
+      path_json_file.clone(),
+      result),
+    None => panic!("personal_token must set")
+    }
+  }
+
+  let exist_personal_token = 
+    load_env(path_json_file);
+
   let result = 
-    get_reqwest(personal_token).await.expect("func error");
+    get_reqwest(exist_personal_token).await.expect("func error");
 
   result.into()
 }
