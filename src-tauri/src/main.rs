@@ -3,6 +3,15 @@
   windows_subsystem = "windows"
 )]
 
+fn get_target_path() -> PathBuf {
+  let mut path_json_file = 
+    app_dir(&Default::default()).unwrap();
+  path_json_file.push("Tauri Github Analyzer");
+  path_json_file.push("token.json");
+
+  path_json_file.into()
+}
+
 #[derive(Debug)]
 #[allow(dead_code)]
 #[derive(serde::Serialize)]
@@ -26,7 +35,6 @@
     uniques: i64,
     items: Vec<octorust::types::Traffic>,
   }
-
 
 use octorust::{auth::Credentials, Client, types::MinimalRepository};  
 use std::env;
@@ -127,7 +135,6 @@ use std::io::{Write};
 use std::path::PathBuf;
 
 fn create_env_file(
-  dir_path:PathBuf,
   file_path:PathBuf,
   personal_token:String,
 ) {
@@ -136,6 +143,8 @@ fn create_env_file(
       "personal_token" : personal_token.clone(),
     }
   );
+
+ let dir_path = &file_path.parent().unwrap();
 
  if dir_path.exists() {
  } else {
@@ -176,19 +185,12 @@ fn load_env(
 #[tauri::command]
 async fn fetch_repo_info(new_personal_token:Option<String>) 
   -> Vec<TrafficInfo>  {
-
-  let mut path_json_dir = 
-    app_dir(&Default::default()).unwrap();
-  path_json_dir.push("Tauri Github Analyzer");
-
-  let mut path_json_file = path_json_dir.clone();
-  path_json_file.push("token.json");
+  let path_json_file = get_target_path();
 
   if path_json_file.exists() {
   } else {
   match new_personal_token {
     Some(result) => create_env_file(
-      path_json_dir,
       path_json_file.clone(),
       result),
     None => panic!("personal_token must set")
@@ -204,9 +206,25 @@ async fn fetch_repo_info(new_personal_token:Option<String>)
   result.into()
 }
 
+#[tauri::command]
+fn check_exist_file() -> bool {
+  let target_file_path = get_target_path();
+  let result =
+    if target_file_path.exists() {
+      true
+    } else {
+      false
+    };
+
+  result.into()
+}
+
 fn main() {
   tauri::Builder::default()
-  .invoke_handler(tauri::generate_handler![fetch_repo_info])
+  .invoke_handler(tauri::generate_handler![
+    check_exist_file, 
+    fetch_repo_info
+  ])
   .run(tauri::generate_context!())
   .expect("error while running tauri application");
 }

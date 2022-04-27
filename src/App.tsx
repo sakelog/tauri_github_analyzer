@@ -12,8 +12,18 @@ import {
   TabPanel,
   Center,
   Spinner,
+  useDisclosure,
 } from '@chakra-ui/react';
 import MyPanel from 'components/MyPanel';
+import InputDaialog from 'components/InputDialog';
+
+// redux
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from 'redux/store';
+import {
+  setTmpPersonalToken,
+  setTokenSubmitted,
+} from 'redux/lib/slice';
 
 // Main
 const App = () => {
@@ -21,45 +31,76 @@ const App = () => {
     Array<Github.RepoInfo>
   >([]);
 
-  useEffect(() => {
-    // const newPersonalToken =
-    //   process.env.REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN;
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const onGetTraffics = async () => {
-      const results = await invoke<Github.RepoInfo[]>(
-        'fetch_repo_info'
+  // redux
+  const tmpToken = useSelector<RootState>(
+    (state) => state.mainState.tmpPersonalToken
+  ) as string;
+  const tokenSubmitted = useSelector<RootState>(
+    (state) => state.mainState.tokenSubmitted
+  ) as boolean;
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    const onCheckExistFile = async () => {
+      const checkResult = await invoke<boolean>(
+        'check_exist_file'
       );
-      setTrafficResults(results);
+      let resultJson: Github.RepoInfo[] = [];
+      if (checkResult) {
+        resultJson = await invoke<Github.RepoInfo[]>(
+          'fetch_repo_info'
+        );
+      } else {
+        if (tokenSubmitted) {
+          resultJson = await invoke<Github.RepoInfo[]>(
+            'fetch_repo_info',
+            { newPersonalToken: tmpToken }
+          );
+        } else {
+          onOpen();
+        }
+        dispatch(setTokenSubmitted(false));
+        dispatch(setTmpPersonalToken(''));
+      }
+
+      setTrafficResults(resultJson);
     };
-    onGetTraffics();
-  }, []);
+
+    onCheckExistFile();
+  }, [tokenSubmitted]);
 
   return (
-    <Tabs>
-      <TabList>
-        <Tab>Views</Tab>
-        <Tab>Clones</Tab>
-      </TabList>
-      {trafficResults.length === 0 && (
-        <Center h="sm">
-          <Spinner size="xl" color="gray.400" />
-        </Center>
-      )}
-      <TabPanels>
-        <TabPanel>
-          <MyPanel
-            trafficItems={trafficResults}
-            mode="views"
-          />
-        </TabPanel>
-        <TabPanel>
-          <MyPanel
-            trafficItems={trafficResults}
-            mode="clones"
-          />
-        </TabPanel>
-      </TabPanels>
-    </Tabs>
+    <>
+      <InputDaialog isOpen={isOpen} onClose={onClose} />
+      <Tabs>
+        <TabList>
+          <Tab>Views</Tab>
+          <Tab>Clones</Tab>
+        </TabList>
+        {trafficResults.length === 0 && (
+          <Center h="sm">
+            <Spinner size="xl" color="gray.400" />
+          </Center>
+        )}
+        <TabPanels>
+          <TabPanel>
+            <MyPanel
+              trafficItems={trafficResults}
+              mode="views"
+            />
+          </TabPanel>
+          <TabPanel>
+            <MyPanel
+              trafficItems={trafficResults}
+              mode="clones"
+            />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </>
   );
 };
 
