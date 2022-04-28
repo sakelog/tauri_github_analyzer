@@ -51,7 +51,7 @@ const InputDialog = (props: PropTypes) => {
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          Input GitHub personal token.
+          Input GitHub personal access token.
         </ModalHeader>
         <ModalBody>
           <Text color="red" my={2}>
