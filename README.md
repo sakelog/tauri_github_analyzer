@@ -10,10 +10,16 @@ Viewer of GitHub traffic built in Tauri.
 ![issue](https://img.shields.io/github/issues/sakelog/tauri_github_analyzer)
 ![license](https://img.shields.io/github/license/sakelog/tauri_github_analyzer)
 
+## Feature
+
+Just enter the personal access token in this app window to graphically list the Views and Clones of the repositories you have published.
+
 ## Requirement
 
 - for Users
   - Windows 11 (or Windows with WebView2 installed)
+  - GitHub personal access token
+    - permission : public_repo 
 - for Developers
   - Windows 11 (or Windows with WebView2 installed)
   - Microsoft Visual Studio C++ build tools
@@ -25,7 +31,23 @@ Check also this page : https://tauri.studio/docs/getting-started/setting-up-wind
 
 ## Usage
 
+When the application is launched for the first time, a modal window appears.
 
+Enter your GitHub personal access token and click the Submit button in the modal window.
+
+This app requires the following permissions of GitHub personal access token.
+
+-  public_repo
+
+The next time, this app will load the saved personal access token.
+
+In Windows, the following file will be created in C:\Users\{username}\AppData\Roaming\Tauri Github Analyzer.
+
+- token.json
+
+If the token has expired, a modal window will reappear , please enter a new token.
+
+Token can be re-entered up to 5 times. If the limit is exceeded, the application will be forced to exit.
 
 ## About debug
 
