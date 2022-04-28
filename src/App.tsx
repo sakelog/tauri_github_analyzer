@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react';
 import MyPanel from 'components/MyPanel';
 import InputDaialog from 'components/InputDialog';
+import ModalError from 'components/ModalError';
 
 // redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,6 +24,8 @@ import { AppDispatch, RootState } from 'redux/store';
 import {
   setTmpPersonalToken,
   setTokenSubmitted,
+  setErrorMessage,
+  incrementCountTokenSend,
 } from 'redux/lib/slice';
 
 // Main
@@ -40,6 +43,9 @@ const App = () => {
   const tokenSubmitted = useSelector<RootState>(
     (state) => state.mainState.tokenSubmitted
   ) as boolean;
+  const countTokenSend = useSelector<RootState>(
+    (state) => state.mainState.countTokenSend
+  ) as number;
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -48,17 +54,19 @@ const App = () => {
       const checkResult = await invoke<boolean>(
         'check_exist_file'
       );
-      let resultJson: Github.RepoInfo[] = [];
+      let resultJson: string | null = null;
       if (checkResult) {
-        resultJson = await invoke<Github.RepoInfo[]>(
+        resultJson = await invoke<string>(
           'fetch_repo_info'
-        );
+        ).catch(() => null);
+        dispatch(incrementCountTokenSend());
       } else {
         if (tokenSubmitted) {
-          resultJson = await invoke<Github.RepoInfo[]>(
+          resultJson = await invoke<string>(
             'fetch_repo_info',
             { newPersonalToken: tmpToken }
-          );
+          ).catch(() => null);
+          dispatch(incrementCountTokenSend());
         } else {
           onOpen();
         }
@@ -66,41 +74,59 @@ const App = () => {
         dispatch(setTmpPersonalToken(''));
       }
 
-      setTrafficResults(resultJson);
+      let result: Github.RepoInfo[] = [];
+      if (typeof resultJson === 'string') {
+        result = JSON.parse(resultJson);
+        setTrafficResults(result);
+      } else {
+        if (countTokenSend > 0) {
+          dispatch(
+            setErrorMessage(
+              `token set error! : [ ${countTokenSend} ]`
+            )
+          );
+        }
+        await invoke<void>('delete_file');
+      }
     };
-
     onCheckExistFile();
   }, [tokenSubmitted]);
 
   return (
-    <>
-      <InputDaialog isOpen={isOpen} onClose={onClose} />
-      <Tabs>
-        <TabList>
-          <Tab>Views</Tab>
-          <Tab>Clones</Tab>
-        </TabList>
-        {trafficResults.length === 0 && (
-          <Center h="sm">
-            <Spinner size="xl" color="gray.400" />
-          </Center>
-        )}
-        <TabPanels>
-          <TabPanel>
-            <MyPanel
-              trafficItems={trafficResults}
-              mode="views"
-            />
-          </TabPanel>
-          <TabPanel>
-            <MyPanel
-              trafficItems={trafficResults}
-              mode="clones"
-            />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </>
+    <Tabs>
+      <TabList>
+        <Tab>Views</Tab>
+        <Tab>Clones</Tab>
+      </TabList>
+      {trafficResults.length === 0 && (
+        <Center h="sm">
+          <Spinner size="xl" color="gray.400" />
+        </Center>
+      )}
+      {countTokenSend > 5 ? (
+        <ModalError
+          msgTitle="Personal token sending limit over!"
+          isOpen
+          onClose={onClose}
+        />
+      ) : (
+        <InputDaialog isOpen={isOpen} onClose={onClose} />
+      )}
+      <TabPanels>
+        <TabPanel>
+          <MyPanel
+            trafficItems={trafficResults}
+            mode="views"
+          />
+        </TabPanel>
+        <TabPanel>
+          <MyPanel
+            trafficItems={trafficResults}
+            mode="clones"
+          />
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
   );
 };
 

@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 
-// Component
+// component
 import {
   Modal,
   ModalOverlay,
@@ -10,11 +10,12 @@ import {
   ModalFooter,
   Input,
   Button,
+  Text,
 } from '@chakra-ui/react';
 
 // redux
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from 'redux/store';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from 'redux/store';
 import {
   setTmpPersonalToken,
   setTokenSubmitted,
@@ -30,6 +31,10 @@ const InputDialog = (props: PropTypes) => {
   const { isOpen, onClose } = props;
 
   // redux
+  const errorMessage = useSelector<RootState>(
+    (state) => state.mainState.errorMessage
+  ) as string;
+
   const dispatch = useDispatch<AppDispatch>();
 
   const inputElement = useRef<HTMLInputElement>(null);
@@ -46,15 +51,23 @@ const InputDialog = (props: PropTypes) => {
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          GitHub personal token not found.
+          Input GitHub personal token.
         </ModalHeader>
         <ModalBody>
-          <p>Please enter token.</p>
-          <p>tokenを入力してください。</p>
+          <Text color="red" my={2}>
+            {errorMessage}
+          </Text>
+          <Text fontStyle="italic">
+            Please enter token.
+          </Text>
+          <Text fontStyle="italic">
+            tokenを入力してください。
+          </Text>
           <Input
             type="text"
             ref={inputElement}
             autoComplete="off"
+            my={2}
           />
         </ModalBody>
         <ModalFooter>
