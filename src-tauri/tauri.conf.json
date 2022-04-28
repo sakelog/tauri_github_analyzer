@@ -1,7 +1,7 @@
 {
   "package": {
-    "productName": "tauri_github_analyzer",
-    "version": "0.1.0"
+    "productName": "Tauri Github Analyzer",
+    "version": "1.0.0"
   },
   "build": {
     "distDir": "../build",
@@ -23,8 +23,8 @@
       ],
       "resources": [],
       "externalBin": [],
-      "copyright": "",
-      "category": "DeveloperTool",
+      "copyright": "Copyright (c) 2022 sake",
+      "category": "Utility",
       "shortDescription": "",
       "longDescription": "",
       "deb": {
@@ -40,16 +40,22 @@
         "entitlements": null
       },
       "windows": {
-        "certificateThumbprint": null,
+        "certificateThumbprint": "D539EAF58E0641C30E374FDEC854E0AAF17904BB",
         "digestAlgorithm": "sha256",
-        "timestampUrl": ""
+        "timestampUrl": "http://timestamp.comodoca.com",
+        "wix": {
+          "language": ["en-US", "jp-JP"]
+        }
       }
     },
     "updater": {
       "active": false
     },
     "allowlist": {
-      "all": true
+      "all": false,
+      "path": {
+        "all": true
+      }
     },
     "windows": [
       {

@@ -105,7 +105,7 @@ const App = () => {
       )}
       {countTokenSend > 5 ? (
         <ModalError
-          msgTitle="Personal token sending limit over!"
+          msgTitle="Personal access token sending limit over!"
           isOpen
           onClose={onClose}
         />
