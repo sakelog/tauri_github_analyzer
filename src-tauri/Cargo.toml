@@ -1,10 +1,10 @@
 [package]
 name = "tauri_github_analyzer"
-version = "0.1.0"
+version = "1.0.0"
 description = "Github Traffic Analyzer with Tauri"
 authors = ["sake <sakelog.website@gmail.com>"]
 license = "MIT"
-repository = ""
+repository = "https://github.com/sakelog/tauri_github_analyzer"
 default-run = "tauri_github_analyzer"
 edition = "2021"
 rust-version = "1.57"
@@ -20,8 +20,6 @@ serde = { version = "1.0", features = ["derive"] }
 tauri = { version = "1.0.0-rc.5", features = ["path-all"] }
 anyhow = "1.0"
 octorust = "0.1.35"
-reqwest = { version = "0.11", features = ["json"] }
-tokio = { version = "1", features = ["full"] }
 
 [features]
 # by default Tauri runs in production mode
