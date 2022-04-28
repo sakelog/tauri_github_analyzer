@@ -23,8 +23,8 @@
       ],
       "resources": [],
       "externalBin": [],
-      "copyright": "",
-      "category": "DeveloperTool",
+      "copyright": "Copyright (c) 2022 sake",
+      "category": "Utility",
       "shortDescription": "",
       "longDescription": "",
       "deb": {
@@ -40,16 +40,19 @@
         "entitlements": null
       },
       "windows": {
-        "certificateThumbprint": null,
+        "certificateThumbprint": "D539EAF58E0641C30E374FDEC854E0AAF17904BB",
         "digestAlgorithm": "sha256",
-        "timestampUrl": ""
+        "timestampUrl": "http://timestamp.comodoca.com"
       }
     },
     "updater": {
       "active": false
     },
     "allowlist": {
-      "all": true
+      "all": false,
+      "path": {
+        "all": true
+      }
     },
     "windows": [
       {
