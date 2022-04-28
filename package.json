@@ -1,6 +1,6 @@
 {
   "name": "tauri_github_analyzer",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "Github Traffic Analyzer with Tauri",
   "author": "sake <sakelog.website@gmail.com>",
   "license": "MIT",
@@ -33,7 +33,7 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.0.0-rc.8",
+    "@tauri-apps/cli": "1.0.0-rc.9",
     "@tsconfig/create-react-app": "^1.0.2",
     "@types/jest": "^27.4.1",
     "@types/loadable__component": "^5.13.4",
