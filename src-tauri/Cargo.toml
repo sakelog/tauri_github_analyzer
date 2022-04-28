@@ -1,6 +1,6 @@
 [package]
 name = "tauri_github_analyzer"
-version = "1.0.0"
+version = "1.0.1"
 description = "Github Traffic Analyzer with Tauri"
 authors = ["sake <sakelog.website@gmail.com>"]
 license = "MIT"
