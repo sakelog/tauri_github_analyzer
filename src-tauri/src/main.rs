@@ -52,7 +52,6 @@ fn check_exist_file() -> bool {
   }
 
 use octorust::{auth::Credentials, Client, types::MinimalRepository};  
-use std::env;
 
 async fn get_login_user(github:Client) -> 
   Result<String> {
