@@ -5,10 +5,28 @@ Viewer of GitHub traffic built in Tauri.
 <img width="640" alt="screenshot_tauri_github_analyzer" src="https://user-images.githubusercontent.com/60056078/165714721-6f1b1003-8d88-4979-87f0-075260459f98.png">
 </div>
   
-![size](https://img.shields.io/github/languages/code-size/sakelog/tauri_github_analyzer)
-![release](https://img.shields.io/github/v/release/sakelog/tauri_github_analyzer)
-![issue](https://img.shields.io/github/issues/sakelog/tauri_github_analyzer)
-![license](https://img.shields.io/github/license/sakelog/tauri_github_analyzer)
+<div align="center">
+<img src="https://img.shields.io/github/languages/code-size/sakelog/tauri_github_analyzer" alt="code_size" >
+<img src="https://img.shields.io/github/v/release/sakelog/tauri_github_analyzer" alt="release">
+<img src="https://img.shields.io/github/issues/sakelog/tauri_github_analyzer" alt="issue">
+<img src="https://img.shields.io/github/license/sakelog/tauri_github_analyzer" alt="license">
+</div>
+
+<div align="center">
+  
+  [Feature](#feature)
+  ・
+  [Requirement](#requirement)
+  ・
+  [Usage](#usage)
+  ・
+  [Reference](#reference)
+  ・
+  [Author](#author)
+  ・
+  [License](#license)
+  
+</div>
 
 ## Feature
 
@@ -31,6 +49,8 @@ Check also this page : https://tauri.studio/docs/getting-started/setting-up-wind
 
 ## Usage
 
+You can download the latest version here : [Releases](https://github.com/sakelog/tauri_github_analyzer/releases)
+
 When the application is launched for the first time, a modal window appears.
 
 Enter your GitHub personal access token and click the Submit button in the modal window.
@@ -49,7 +69,7 @@ If the token has expired, a modal window will reappear , please enter a new toke
 
 Token can be re-entered up to 5 times. If the limit is exceeded, the application will be forced to exit.
 
-## About debug
+### About debug
 
 You can also debug with the following commands.
 
