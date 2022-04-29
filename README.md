@@ -1,4 +1,5 @@
 # tauri_github_analyzer
+
 Viewer of GitHub traffic built in Tauri.
 
 <div align="center">
@@ -35,11 +36,11 @@ Just enter the personal access token in this app window to graphically list the 
 ## Requirement
 
 - for Users
-  - Windows 11 (or Windows with WebView2 installed)
+  - Windows 11 (or Windows that installed WebView2)
   - GitHub personal access token
-    - permission : public_repo 
+    - permission : public_repo
 - for Developers
-  - Windows 11 (or Windows with WebView2 installed)
+  - Windows 11 (or Windows that installed WebView2)
   - Microsoft Visual Studio C++ build tools
   - Rustc and Cargo Package Manager
   - Node.js
@@ -57,7 +58,7 @@ Enter your GitHub personal access token and click the Submit button in the modal
 
 This app requires the following permissions of GitHub personal access token.
 
--  public_repo
+- public_repo
 
 The next time, this app will load the saved personal access token.
 
@@ -83,8 +84,9 @@ yarn dev
 ## Reference
 
 - https://tauri.studio/
-- https://docs.rs/octorust/latest/octorust/
 - https://doc.rust-jp.rs/rust-by-example-ja/
+- https://docs.rs/reqwest/latest/reqwest/
+- https://curlconverter.com/#rust
 - https://chakra-ui.com/
 
 ## Author
