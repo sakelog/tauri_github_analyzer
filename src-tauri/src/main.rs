@@ -47,12 +47,19 @@ async fn fetch_repo_info(
 match new_personal_token {
   Some(token) => create_env_file(
     state.0.clone(),
-    token),
+    token).unwrap(),
   None => ()
   };
 
   let exist_personal_token = 
     load_env(state.0.clone());
+
+  let exist_personal_token = 
+  match exist_personal_token {
+    Ok(token) => token,
+    Err(_) => 
+    return Err("personal token load error".to_string()),
+  };
 
   let fetch_result = 
     get_reqwest::main(exist_personal_token).await;
