@@ -64,7 +64,7 @@ GitHub の personal access token を入力して、Submit ボタンを押して�
 
 次回の起動以降は、保存された personal access token を読み込みます。
 
-Windows では、以下のファイルが次のパスに作成されます： C:\Users\{username}\AppData\Roaming\Tauri Github Analyzer.
+Windows では、以下のファイルが次のパスに作成されます： C:\Users\{username}\AppData\Roaming\Tauri GitHub Analyzer.
 
 - token.json
 

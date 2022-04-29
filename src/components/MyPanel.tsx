@@ -20,7 +20,7 @@ import Chart from 'components/Chart';
 import { config } from 'components/config';
 
 type PropTypes = {
-  trafficItems: Github.RepoInfo[];
+  trafficItems: GitHub.RepoInfo[];
   mode: 'views' | 'clones';
 };
 

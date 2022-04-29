@@ -1,7 +1,7 @@
 [package]
 name = "tauri_github_analyzer"
-version = "1.1.1"
-description = "Github Traffic Analyzer with Tauri"
+version = "1.1.2"
+description = "GitHub Traffic Analyzer with Tauri"
 authors = ["sake <sakelog.website@gmail.com>"]
 license = "MIT"
 repository = "https://github.com/sakelog/tauri_github_analyzer"
@@ -21,6 +21,7 @@ tauri = { version = "1.0.0-rc.8", features = ["path-all"] }
 anyhow = "1.0"
 reqwest = { version = "0.11", features = ["json"] }
 tokio = { version = "1", features = ["full"] }
+futures = "0.3"
 
 [features]
 # by default Tauri runs in production mode

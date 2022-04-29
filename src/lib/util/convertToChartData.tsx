@@ -1,8 +1,8 @@
 import { formatDate } from 'lib/util/formatDate';
 
 const sortByTimeStamp = (
-  a: Github.Traffic,
-  b: Github.Traffic
+  a: GitHub.Traffic,
+  b: GitHub.Traffic
 ) => {
   const timestampA = a.timestamp;
   const timestampB = b.timestamp;
@@ -18,7 +18,7 @@ const sortByTimeStamp = (
 };
 
 export const convertToChartData = (
-  targetArray: Array<Github.Traffic>
+  targetArray: Array<GitHub.Traffic>
 ) => {
   targetArray.sort(sortByTimeStamp);
   const slicedArray = targetArray.slice(-5);

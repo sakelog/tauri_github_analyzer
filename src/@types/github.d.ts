@@ -1,4 +1,4 @@
-declare namespace Github {
+declare namespace GitHub {
   export type RepoInfo = {
     name: string;
     url: string;

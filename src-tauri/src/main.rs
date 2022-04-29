@@ -13,10 +13,13 @@ use tauri_github_analyzer::{get_reqwest,load_env,create_env_file};
 struct PathState(PathBuf);
 
 fn get_target_path() -> PathBuf {
+  const APP_NAME : &str = "Tauri GitHub Analyzer";
+  const FILE_NAME : &str = "token.json";
+
   let mut path_json_file = 
     app_dir(&Default::default()).unwrap();
-  path_json_file.push("Tauri Github Analyzer");
-  path_json_file.push("token.json");
+  path_json_file.push(APP_NAME);
+  path_json_file.push(FILE_NAME);
 
   path_json_file.into()
 }
@@ -44,12 +47,19 @@ async fn fetch_repo_info(
 match new_personal_token {
   Some(token) => create_env_file(
     state.0.clone(),
-    token),
+    token).unwrap(),
   None => ()
   };
 
   let exist_personal_token = 
     load_env(state.0.clone());
+
+  let exist_personal_token = 
+  match exist_personal_token {
+    Ok(token) => token,
+    Err(_) => 
+    return Err("personal token load error".to_string()),
+  };
 
   let fetch_result = 
     get_reqwest::main(exist_personal_token).await;
@@ -78,6 +88,8 @@ fn abnormal_end() -> Result<(),()> {
   panic!("token send limit over")
 }
 
+use std::env;
+
 fn main() {
   tauri::Builder::default()
   .manage(PathState(get_target_path().into()))
@@ -87,6 +99,6 @@ fn main() {
     delete_file,
     abnormal_end
   ])
-  .run(tauri::generate_context!())
+  .run(tauri::generate_context!("tauri.conf.json"))
   .expect("error while running tauri application");
 }

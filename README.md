@@ -64,7 +64,7 @@ This app requires the following permissions of GitHub personal access token.
 
 The next time, this app will load the saved personal access token.
 
-In Windows, the following file will be created in C:\Users\{username}\AppData\Roaming\Tauri Github Analyzer.
+In Windows, the following file will be created in C:\Users\{username}\AppData\Roaming\Tauri GitHub Analyzer.
 
 - token.json
 
