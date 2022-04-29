@@ -1,6 +1,6 @@
 {
   "name": "tauri_github_analyzer",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Github Traffic Analyzer with Tauri",
   "author": "sake <sakelog.website@gmail.com>",
   "license": "MIT",
