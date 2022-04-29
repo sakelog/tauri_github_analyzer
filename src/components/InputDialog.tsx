@@ -68,6 +68,7 @@ const InputDialog = (props: PropTypes) => {
             ref={inputElement}
             autoComplete="off"
             my={2}
+            required
           />
         </ModalBody>
         <ModalFooter>
