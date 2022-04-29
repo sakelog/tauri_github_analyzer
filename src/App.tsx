@@ -31,7 +31,7 @@ import {
 // Main
 const App = () => {
   const [trafficResults, setTrafficResults] = useState<
-    Array<Github.RepoInfo>
+    Array<GitHub.RepoInfo>
   >([]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -74,7 +74,7 @@ const App = () => {
         dispatch(setTmpPersonalToken(''));
       }
 
-      let result: Github.RepoInfo[] = [];
+      let result: GitHub.RepoInfo[] = [];
       if (typeof resultJson === 'string') {
         result = JSON.parse(resultJson);
         setTrafficResults(result);

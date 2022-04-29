@@ -57,7 +57,7 @@
     },
     "windows": [
       {
-        "title": "Github Analyzer",
+        "title": "GitHub Analyzer",
         "width": 800,
         "height": 600,
         "resizable": true,
@@ -65,7 +65,7 @@
       }
     ],
     "security": {
-      "csp": null
+      "csp": "default-src blob: data: filesystem: ws: wss: http: https: tauri: 'unsafe-eval' 'unsafe-inline' 'self' img-src: 'self'"
     }
   }
 }

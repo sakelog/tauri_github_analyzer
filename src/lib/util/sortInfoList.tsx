@@ -1,10 +1,10 @@
 export const sortInfoList = (
-  targetArray: Array<Github.RepoInfo>,
+  targetArray: Array<GitHub.RepoInfo>,
   mode: 'views' | 'clones'
 ) => {
   const sortByCount = (
-    a: Github.RepoInfo,
-    b: Github.RepoInfo
+    a: GitHub.RepoInfo,
+    b: GitHub.RepoInfo
   ) => {
     const countA =
       mode === 'views'
