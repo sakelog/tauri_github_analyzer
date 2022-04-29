@@ -31,7 +31,7 @@ Viewer of GitHub traffic built in Tauri.
 
 ## Feature
 
-Just enter the personal access token in this app window to graphically list the Views and Clones of the repositories you have published.
+Just enter the personal access token in this app window to graphically list the Views and Clones of your public repositories.
 
 ## Requirement
 
