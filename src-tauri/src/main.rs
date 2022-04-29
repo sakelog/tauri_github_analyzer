@@ -4,6 +4,13 @@
 )]
 
 use anyhow::Result;
+use std::fs;
+use std::path::PathBuf;
+
+use tauri::api::path::app_dir;
+use tauri_github_analyzer::{get_reqwest,load_env,create_env_file};
+
+struct PathState(PathBuf);
 
 fn get_target_path() -> PathBuf {
   let mut path_json_file = 
@@ -15,8 +22,8 @@ fn get_target_path() -> PathBuf {
 }
 
 #[tauri::command]
-fn check_exist_file() -> bool {
-  let target_file_path = get_target_path();
+fn check_exist_file(state: tauri::State<'_, PathState>) -> bool {
+  let target_file_path = &state.0;
   let result =
     if target_file_path.exists() {
       true
@@ -27,29 +34,22 @@ fn check_exist_file() -> bool {
   result.into()
 }
 
-use std::fs;
-use std::path::PathBuf;
-
-use tauri::api::path::{app_dir};
-use tauri_github_analyzer::{get_reqwest,load_env,create_env_file};
-
 #[tauri::command]
-async fn fetch_repo_info(new_personal_token:Option<String>) 
+async fn fetch_repo_info(
+  new_personal_token:Option<String>,
+  state: tauri::State<'_, PathState>
+) 
   -> Result<String,String>  {
-  let path_json_file = get_target_path();
 
-  if path_json_file.exists() {
-  } else {
-  match new_personal_token {
-    Some(token) => create_env_file(
-      path_json_file.clone(),
-      token),
-    None => ()
-    };
+match new_personal_token {
+  Some(token) => create_env_file(
+    state.0.clone(),
+    token),
+  None => ()
   };
 
   let exist_personal_token = 
-    load_env(path_json_file);
+    load_env(state.0.clone());
 
   let fetch_result = 
     get_reqwest::main(exist_personal_token).await;
@@ -65,8 +65,8 @@ async fn fetch_repo_info(new_personal_token:Option<String>)
 }
 
 #[tauri::command]
-fn delete_file() {
-  let file_path = get_target_path();
+fn delete_file(state: tauri::State<PathState>) {
+  let file_path = &state.0;
     if file_path.exists() {
     fs::remove_file(file_path)
     .expect("file delete error")
@@ -80,6 +80,7 @@ fn abnormal_end() -> Result<(),()> {
 
 fn main() {
   tauri::Builder::default()
+  .manage(PathState(get_target_path().into()))
   .invoke_handler(tauri::generate_handler![
     check_exist_file, 
     fetch_repo_info,
