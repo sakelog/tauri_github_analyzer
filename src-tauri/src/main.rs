@@ -3,9 +3,6 @@
   windows_subsystem = "windows"
 )]
 
-mod fetch_repo_info;
-use fetch_repo_info::get_reqwest;
-
 use anyhow::Result;
 
 fn get_target_path() -> PathBuf {
@@ -30,60 +27,11 @@ fn check_exist_file() -> bool {
   result.into()
 }
 
-use tauri::api::path::{app_dir};
 use std::fs;
-use std::fs::OpenOptions;
-use std::io::Write;
-
 use std::path::PathBuf;
 
-fn create_env_file(
-  file_path:PathBuf,
-  personal_token:String,
-) {
-  let personal_token_json = serde_json::json!(
-    {
-      "personal_token" : personal_token.clone(),
-    }
-  );
-
- let dir_path = &file_path.parent().unwrap();
-
- if dir_path.exists() {
- } else {
-  fs::create_dir(dir_path)
-    .unwrap_or_else(|why| {
-      println!("!dir: {:?}", why.kind())});
-  }
-
-  let mut output_file = 
-    OpenOptions::new()
-    .create(true)
-    .write(true)
-    .open(file_path)
-    .expect("file create error");
-
-  let out_str =
-    serde_json::to_string(&personal_token_json)
-    .expect("json toStr error");
-  
-  let out_buf = out_str.as_bytes();
-  output_file.write_all(out_buf).expect("write file error");
-  output_file.flush().expect("flush file error");
-}
-
-fn load_env(
-  file_path:PathBuf
-) -> String {
-  let input_str = fs::read_to_string(file_path)
-    .expect("file read error");
-
-  let input_json :serde_json::Value = 
-    serde_json::from_str(&input_str)
-    .expect("str toJson error");
-
-  input_json["personal_token"].as_str().unwrap().into()
-}
+use tauri::api::path::{app_dir};
+use tauri_github_analyzer::{get_reqwest,load_env,create_env_file};
 
 #[tauri::command]
 async fn fetch_repo_info(new_personal_token:Option<String>) 
@@ -104,15 +52,13 @@ async fn fetch_repo_info(new_personal_token:Option<String>)
     load_env(path_json_file);
 
   let fetch_result = 
-    get_reqwest(exist_personal_token)
-    .await;
+    get_reqwest::main(exist_personal_token).await;
 
   let result_json = match fetch_result {
     Ok(fetch_result) => 
-    serde_json::json!(fetch_result)
-    .to_string(),
-    Err(_) => 
-      return Err("fetch repo info error".to_string()),
+      serde_json::json!(fetch_result)
+      .to_string(),
+    Err(_) => return Err("fetch repo info error".to_string()),
   };
 
   Ok(result_json)
