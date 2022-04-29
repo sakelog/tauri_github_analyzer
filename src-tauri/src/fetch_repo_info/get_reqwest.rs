@@ -1,6 +1,7 @@
 use anyhow::{Result,anyhow};
 use reqwest::{Client,header};
 use serde_json::Value;
+use futures::future;
 use super::struct_type::{
   TrafficInfo,Repository,ViewsItem,ClonesItem,TrafficItem
 };
@@ -69,36 +70,44 @@ pub async fn get_traffic_info(
 
     let views_url = 
       format!("https://api.github.com/repos/{owner}/{repo_name}/traffic/views");
-      let views = 
+    let clones_url = 
+      format!("https://api.github.com/repos/{owner}/{repo_name}/traffic/clones");
+
+
+    let views = 
       github.clone()
       .get(views_url)
-      .send()
-      .await;
-
-    let views_text = match views {
-      Ok(resp) => resp.text().await,
-      Err(e) => return Err(anyhow!(e)),
-    };
-
-    let views_json:ViewsItem = match views_text {
-      Ok(text) => serde_json::from_str(&text)?,
-      Err(e) => return Err(anyhow!(e)), 
-    };
-
-    let clones_url = 
-    format!("https://api.github.com/repos/{owner}/{repo_name}/traffic/clones");
+      .send();
     let clones = 
       github.clone()
       .get(clones_url)
-      .send()
-      .await;
+      .send();
 
-    let clones_text = match clones {
-      Ok(resp) => resp.text().await,
+    let (result_views,result_clones) =
+      future::join(views , clones).await;
+
+    let views_text = 
+    match result_views {
+      Ok(resp) => resp.text(),
       Err(e) => return Err(anyhow!(e)),
     };
+    let clones_text = 
+    match result_clones {
+      Ok(resp) => resp.text(),
+      Err(e) => return Err(anyhow!(e)),
+    };
+
+    let (result_views_text, result_clones_text) =
+      future::join(views_text, clones_text).await;
+
+    let views_json:ViewsItem = 
+    match result_views_text {
+      Ok(text) => serde_json::from_str(&text)?,
+      Err(e) => return Err(anyhow!(e)), 
+    };
   
-    let clones_json:ClonesItem = match clones_text {
+    let clones_json:ClonesItem = 
+    match result_clones_text {
       Ok(text) => serde_json::from_str(&text)?,
       Err(e) => return Err(anyhow!(e)), 
     };
@@ -136,8 +145,12 @@ pub async fn main(personal_token:String)
   let github = reqwest::Client::builder()
     .user_agent(USER_AGENT)
     .default_headers(headers)
-    .build()
-    .expect("client error");
+    .build();
+
+  let github = match github {
+    Ok(client) => client,
+    Err(e) => return Err(anyhow!(e)),
+  };
 
   let login = 
     get_login_user(github.clone()).await;

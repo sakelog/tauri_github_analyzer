@@ -2953,6 +2953,7 @@ name = "tauri_github_analyzer"
 version = "1.1.1"
 dependencies = [
  "anyhow",
+ "futures",
  "reqwest",
  "serde",
  "serde_json",
