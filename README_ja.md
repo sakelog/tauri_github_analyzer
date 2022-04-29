@@ -2,6 +2,8 @@
 
 Tauri で構築した GitHub トラフィックビューア
 
+[README in English](/README.md)
+
 <div align="center">
 <img width="640" alt="screenshot_tauri_github_analyzer" src="https://user-images.githubusercontent.com/60056078/165714721-6f1b1003-8d88-4979-87f0-075260459f98.png">
 </div>
