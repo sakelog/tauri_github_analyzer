@@ -70,7 +70,11 @@ If the token has expired, a modal window will reappear , please enter a new toke
 
 Token can be re-entered up to 5 times. If the limit is exceeded, the application will be forced to exit.
 
-### About debug
+### For Developpers
+
+Docs is here : https://github.com/sakelog/tauri_github_analyzer/tree/main/docs
+
+#### About debug
 
 You can also debug with the following commands.
 
@@ -79,6 +83,14 @@ git clone ...
 cd tauri_github_analyzer
 yarn
 yarn dev
+```
+
+### If you make a production build
+
+For production build, execute the following command.
+
+```shell
+yarn release
 ```
 
 ## Reference
