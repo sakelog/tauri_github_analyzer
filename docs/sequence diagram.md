@@ -5,10 +5,10 @@ sequenceDiagram
   participant React
   participant Rust
   participant G as GitHub_API
-  
+
   activate React
   activate Rust
-  
+
  loop Until token submitted > 5
     Rust->>Rust : get_target_path : Create path of output for "token.json"
     React->>+Rust : check_exist_file : Check "token.json" is exist
@@ -28,9 +28,9 @@ sequenceDiagram
     Rust->>Rust : get_reqwest : Create http Client with ACCEPT and AUTHORIZATION header
     Rust->>+G : Get users (with Client)
     G-->>-Rust : Return users
-    Rust->>Rust : Extract "login" from user object
-    Rust->>+G : Get repositorys (with Client, login)
-    G-->>-Rust : Return repositorys
+    Rust->>Rust : Extract "login" from users object
+    Rust->>+G : Get repositories (with Client, login)
+    G-->>-Rust : Return repositories
     Rust->>Rust : Create empty vector : traffic_list[]
     loop Each repository
       Rust->>Rust : Extract "name", "html_url" from repository
@@ -54,7 +54,7 @@ sequenceDiagram
  React->>User : Display warning window
  React->>+Rust : abnormal_end : Request to force exit the app
  Rust->>-Rust : Force exit the app
- 
+
  deactivate React
  deactivate Rust
 ```

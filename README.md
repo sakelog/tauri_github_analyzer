@@ -74,14 +74,19 @@ Token can be re-entered up to 5 times. If the limit is exceeded, the application
 
 Docs is here : https://github.com/sakelog/tauri_github_analyzer/tree/main/docs
 
-#### About debug
-
-You can also debug with the following commands.
+You can clone this repository with follow command.
 
 ```shell
 git clone ...
 cd tauri_github_analyzer
 yarn
+```
+
+#### About debug
+
+You can also debug with the following commands.
+
+```shell
 yarn dev
 ```
 
