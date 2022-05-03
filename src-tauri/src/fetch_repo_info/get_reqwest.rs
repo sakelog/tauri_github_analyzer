@@ -109,7 +109,7 @@ pub async fn get_traffic_info(
 }
 
 pub async fn main(personal_token: String) -> Result<Vec<TrafficInfo>> {
-    const USER_AGENT: &str = "user-agent-name";
+    const USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
 
     let mut headers = header::HeaderMap::new();
     headers.insert("Accept", "application/vnd.github.v3+json".parse().unwrap());
