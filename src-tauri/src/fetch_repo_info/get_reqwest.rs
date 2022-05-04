@@ -55,6 +55,7 @@ pub async fn get_traffic_info(
     let mut traffic_list: Vec<TrafficInfo> = vec![];
 
     let owner = login;
+
     for repo in repos {
         let repo_name = repo.name;
 
@@ -64,26 +65,30 @@ pub async fn get_traffic_info(
         let views = github.clone().get(views_url).send();
         let clones = github.clone().get(clones_url).send();
 
-        let (result_views, result_clones) = future::join(views, clones).await;
-
-        let views_text = match result_views {
+        let views_text = tokio::spawn(match views.await {
             Ok(resp) => resp.text(),
             Err(e) => return Err(anyhow!(e)),
-        };
-        let clones_text = match result_clones {
+        });
+        let clones_text = tokio::spawn(match clones.await {
             Ok(resp) => resp.text(),
             Err(e) => return Err(anyhow!(e)),
-        };
+        });
 
         let (result_views_text, result_clones_text) = future::join(views_text, clones_text).await;
 
         let views_json: ViewsItem = match result_views_text {
-            Ok(text) => serde_json::from_str(&text)?,
+            Ok(result) => match result {
+                Ok(text) => serde_json::from_str(&text)?,
+                Err(e) => return Err(anyhow!(e)),
+            },
             Err(e) => return Err(anyhow!(e)),
         };
 
         let clones_json: ClonesItem = match result_clones_text {
-            Ok(text) => serde_json::from_str(&text)?,
+            Ok(result) => match result {
+                Ok(text) => serde_json::from_str(&text)?,
+                Err(e) => return Err(anyhow!(e)),
+            },
             Err(e) => return Err(anyhow!(e)),
         };
 
