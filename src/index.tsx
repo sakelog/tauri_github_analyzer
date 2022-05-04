@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 // redux
-import { store } from 'redux/store';
+import { store } from 'lib/redux/store';
 import { Provider } from 'react-redux';
 
 // Chakra
@@ -25,7 +25,7 @@ root?.render(
   </React.StrictMode>
 );
 
-if (process.env.NODE_ENV === 'development') {
+if (import.meta.env.DEV) {
   // eslint-disable-next-line no-console
   reportWebVitals(console.log);
 }
