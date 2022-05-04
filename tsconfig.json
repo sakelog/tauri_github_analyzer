@@ -2,6 +2,7 @@
   "extends": "@tsconfig/vite-react/tsconfig.json",
   "compilerOptions": {
     "jsx": "react-jsx",
+    "skipLibCheck": true,
     "baseUrl": "./src",
     "paths": {
       "components/*": ["components/*"],
