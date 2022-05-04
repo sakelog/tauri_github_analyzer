@@ -102,11 +102,12 @@ yarn release
 
 ## 参考サイト
 
-- https://tauri.studio/
-- https://doc.rust-jp.rs/rust-by-example-ja/
-- https://docs.rs/reqwest/latest/reqwest/
-- https://curlconverter.com/#rust
-- https://chakra-ui.com/
+- [Build smaller, faster, and more secure desktop applications with a web frontend | Tauri Studio](https://tauri.studio/)
+- [Introduction - Rust By Example 日本語版](https://doc.rust-jp.rs/rust-by-example-ja/)
+- [reqwest - Rust](https://docs.rs/reqwest/latest/reqwest/)
+- [Convert curl commands to code](https://curlconverter.com/#rust)
+- [Chakra UI - A simple, modular and accessible component library that gives you the building blocks you need to build your React applications. - Chakra UI](https://chakra-ui.com/)
+- [ビルドシステムをcreate-react-appからViteに移行した話 - Sansan Builders Blog](https://buildersbox.corp-sansan.com/entry/2022/03/24/110000)
 
 ## 作成者
 
