@@ -34,7 +34,12 @@ const App = () => {
     Array<GitHub.RepoInfo>
   >([]);
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { onClose: errorOnClose } = useDisclosure();
+  const {
+    isOpen: submitIsOpen,
+    onOpen: submitOnOpen,
+    onClose: submitOnClose,
+  } = useDisclosure();
 
   // redux
   const tmpToken = useSelector<RootState>(
@@ -68,7 +73,7 @@ const App = () => {
           ).catch(() => null);
           dispatch(incrementCountTokenSend());
         } else {
-          onOpen();
+          submitOnOpen();
         }
         dispatch(setTokenSubmitted(false));
         dispatch(setTmpPersonalToken(''));
@@ -107,10 +112,13 @@ const App = () => {
         <ModalError
           msgTitle="Personal access token sending limit over!"
           isOpen
-          onClose={onClose}
+          onClose={errorOnClose}
         />
       ) : (
-        <InputDaialog isOpen={isOpen} onClose={onClose} />
+        <InputDaialog
+          isOpen={submitIsOpen}
+          onClose={submitOnClose}
+        />
       )}
       <TabPanels>
         <TabPanel>
