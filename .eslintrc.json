@@ -17,7 +17,6 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
-    "react-app/jest",
     "airbnb",
     "airbnb-typescript",
     "prettier"
