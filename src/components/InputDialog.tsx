@@ -15,11 +15,11 @@ import {
 
 // redux
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from 'redux/store';
+import { RootState, AppDispatch } from 'lib/redux/store';
 import {
   setTmpPersonalToken,
   setTokenSubmitted,
-} from 'redux/lib/slice';
+} from 'lib/redux/lib/slice';
 
 // Main
 type PropTypes = {

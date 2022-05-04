@@ -1,12 +1,12 @@
 {
   "extends": "@tsconfig/create-react-app/tsconfig.json",
   "compilerOptions": {
+    "types": ["vite/client"],
     "baseUrl": "./src",
     "paths": {
       "components/*": ["components/*"],
       "layout/*": ["layout/*"],
       "lib/*": ["lib/*"],
-      "redux/*": ["redux/*"],
       "style/*": ["style/*"]
     }
   },

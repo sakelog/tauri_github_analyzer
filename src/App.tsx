@@ -20,13 +20,13 @@ import ModalError from 'components/ModalError';
 
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from 'redux/store';
+import { AppDispatch, RootState } from 'lib/redux/store';
 import {
   setTmpPersonalToken,
   setTokenSubmitted,
   setErrorMessage,
   incrementCountTokenSend,
-} from 'redux/lib/slice';
+} from 'lib/redux/lib/slice';
 
 // Main
 const App = () => {
