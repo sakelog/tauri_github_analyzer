@@ -17,15 +17,15 @@ Tauri で構築した GitHub トラフィックビューア
 
 <div align="center">
   
-  [Feature](#feature)
+  [特徴](#特徴)
   ・
-  [Requirement](#requirement)
+  [必要なもの](#必要なもの)
   ・
-  [Usage](#usage)
+  [利用方法](#利用方法)
   ・
-  [Reference](#reference)
+  [参考サイト](#参考サイト)
   ・
-  [Author](#author)
+  [作成者](#作成者)
   ・
   [License](#license)
   
@@ -92,7 +92,7 @@ yarn
 yarn dev
 ```
 
-### production build を作成したいとき
+#### production build を作成したいとき
 
 production build をするには、下記コマンドを実行してください.
 
