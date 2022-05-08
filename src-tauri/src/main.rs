@@ -75,8 +75,6 @@ fn abnormal_end() -> Result<(), ()> {
     panic!("token send limit over")
 }
 
-use std::env;
-
 fn main() {
     tauri::Builder::default()
         .manage(PathState(get_target_path().into()))
@@ -86,6 +84,6 @@ fn main() {
             delete_file,
             abnormal_end
         ])
-        .run(tauri::generate_context!("tauri.conf.json"))
+        .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
