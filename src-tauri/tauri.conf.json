@@ -13,7 +13,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "tauri_github_analyzer",
+      "identifier": "tauri-github-analyzer",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
